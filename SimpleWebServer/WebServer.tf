@@ -28,6 +28,9 @@ resource "aws_instance" "my_webserver" {
     Name  = "Web Server Build by Terraform"
     Owner = "Oleksii Shcherbakov"
   }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 
@@ -35,11 +38,14 @@ resource "aws_security_group" "my_webserver" {
   name        = "WebServer Security Group"
   description = "My First SecurityGroup"
 
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+  dynamic "ingress" {
+    for_each = ["80", "443"]
+    content {
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
   }
 
   egress {
