@@ -1,5 +1,5 @@
 
-# Terraform 0.13+ 
+# Terraform 0.14+ 
 
 ### Set AWS Credentials in Windows PowerShell:
 ```
